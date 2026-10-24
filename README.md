@@ -310,6 +310,45 @@ nova-desktop-companion/
 └── README.md                    # Project documentation
 ```
 
+
+## 🌌 NOVA in Action
+
+<!-- TODO: Replace with an actual screenshot of NOVA running -->
+<p align="center">
+  <img src="docs/images/nova-hero.png"
+       alt="NOVA desktop companion running on Windows"
+       width="900">
+</p>
+
+## 🖥️ User Interface
+
+<!-- TODO: Add a screenshot of the chat interface -->
+<p align="center">
+  <img src="docs/images/chat-interface.png"
+       alt="NOVA chat interface"
+       width="800">
+</p>
+
+## 🎭 Animated Companion
+
+<!-- TODO: Add an actual screenshot or GIF of the avatar -->
+<p align="center">
+  <img src="docs/images/nova-avatar.gif"
+       alt="NOVA animated desktop companion"
+       width="500">
+</p>
+
+## ⚡ Local AI Performance
+
+<!-- TODO: Add verified GPU usage and benchmark results -->
+<p align="center">
+  <img src="docs/images/gpu-benchmark.png"
+       alt="NOVA local inference performance on RTX 4060"
+       width="800">
+</p>
+
+
+
 ---
 
 ## 📜 Licensing, Attribution & Ethics
