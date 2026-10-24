@@ -1,0 +1,29 @@
+{
+  "dataset_name": "NOVA-Companion-Instruct-v1",
+  "version": "1.0.0",
+  "total_examples": 42,
+  "splits": {
+    "train": 33,
+    "validation": 4,
+    "test": 5
+  },
+  "category_distribution": {
+    "study_assistance": 8,
+    "friendly_conversation": 9,
+    "productivity_planning": 5,
+    "privacy_and_security": 2,
+    "instruction_following": 3,
+    "honest_uncertainty": 5,
+    "concise_desktop_advice": 2,
+    "safe_refusals": 4,
+    "clarification_questions": 2,
+    "personality_consistency": 2
+  },
+  "format": "ChatML (system, user, assistant)",
+  "base_model_compatibility": "Qwen2.5-1.5B-Instruct / Qwen2.5-7B",
+  "provenance": {
+    "human_authored_or_reviewed": 42,
+    "license": "Apache-2.0 / MIT compatible",
+    "privacy_compliance": "Zero private personal data; synthetic and curated templates only."
+  }
+}

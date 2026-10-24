@@ -1,5 +1,6 @@
-# ignore the user configuration file
-conf.yaml
+# user configuration file
+# conf.yaml is tracked for NOVA default out-of-the-box configuration
+!conf.yaml
 
 # ignore non-default background images
 /backgrounds/*
@@ -10,13 +11,16 @@ conf.yaml
 !/live2d-models/mao_pro
 !/live2d-models/shizuku
 
-# ignore non-default character configs
+# character configs
 /characters/*
 !/characters/README.md
-# but all of the defaults are already tracked, so no need to un-ignore them
+!/characters/default.yaml
+!/characters/nova.yaml
 
-# ignore avatars
+# avatars
 avatars/*
+!avatars/nova.png
+
 
 # macOS system files
 .DS_Store
@@ -55,6 +59,11 @@ asset
 models/*
 !models/piper_voice
 models/piper_voice/*
+!models/Modelfile
+!models/nova_adapter
+models/nova_adapter/checkpoints/
+models/base_qwen/
+
 
 
 # Legacy and specific directories
