@@ -108,28 +108,39 @@ def init_webtool_routes(default_context_cache: ServiceContext) -> APIRouter:
         for entry in os.scandir(live2d_dir):
             if entry.is_dir():
                 folder_name = entry.name.replace("\\", "/")
-                model3_file = os.path.join(
-                    live2d_dir, folder_name, f"{folder_name}.model3.json"
-                ).replace("\\", "/")
+                candidate_paths = [
+                    os.path.join(live2d_dir, folder_name, f"{folder_name}.model3.json"),
+                    os.path.join(live2d_dir, folder_name, "runtime", f"{folder_name}.model3.json"),
+                ]
+                model3_file = None
+                for cp in candidate_paths:
+                    if os.path.isfile(cp):
+                        model3_file = cp.replace("\\", "/")
+                        break
 
-                if os.path.isfile(model3_file):
+                if model3_file:
                     # Find avatar file if it exists
                     avatar_file = None
                     for ext in supported_extensions:
-                        avatar_path = os.path.join(
-                            live2d_dir, folder_name, f"{folder_name}{ext}"
-                        )
-                        if os.path.isfile(avatar_path):
-                            avatar_file = avatar_path.replace("\\", "/")
+                        candidate_avatars = [
+                            os.path.join(live2d_dir, folder_name, f"{folder_name}{ext}"),
+                            os.path.join("avatars", "nova.png"),
+                        ]
+                        for ap in candidate_avatars:
+                            if os.path.isfile(ap):
+                                avatar_file = ap.replace("\\", "/")
+                                break
+                        if avatar_file:
                             break
 
                     valid_characters.append(
                         {
                             "name": folder_name,
                             "avatar": avatar_file,
-                            "model_path": model3_file,
+                            "model_path": f"/{model3_file}" if not model3_file.startswith("/") else model3_file,
                         }
                     )
+
         return JSONResponse(
             {
                 "type": "live2d-models/info",

@@ -175,8 +175,8 @@ character_config:
 
   # === Automatic Speech Recognition ===
   asr_config:
-    # speech to text model options: 'faster_whisper', 'whisper_cpp', 'whisper', 'azure_asr', 'fun_asr', 'groq_whisper_asr', 'sherpa_onnx_asr'
-    asr_model: 'sherpa_onnx_asr'
+    # speech to text model options: 'faster_whisper', 'whisper_cpp', 'whisper', 'azure_asr', 'fun_asr', 'groq_whisper_asr', 'sherpa_onnx_asr', 'none'
+    asr_model: 'none'
 
     azure_asr:
       api_key: 'azure_api_key'

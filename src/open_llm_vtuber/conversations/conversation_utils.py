@@ -150,6 +150,9 @@ async def process_user_input(
 ) -> str:
     """Process user input, converting audio to text if needed"""
     if isinstance(user_input, np.ndarray):
+        if asr_engine is None:
+            logger.warning("Audio input received, but ASR engine is not active. Please use text chat.")
+            return ""
         logger.info("Transcribing audio input...")
         input_text = await asr_engine.async_transcribe_np(user_input)
         await websocket_send(
@@ -157,6 +160,7 @@ async def process_user_input(
         )
         return input_text
     return user_input
+
 
 
 async def finalize_conversation_turn(

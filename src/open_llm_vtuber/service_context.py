@@ -321,6 +321,12 @@ class ServiceContext:
             logger.critical("Try to proceed without Live2D...")
 
     def init_asr(self, asr_config: ASRConfig) -> None:
+        if asr_config.asr_model in ("none", None, ""):
+            logger.info("ASR is disabled ('none').")
+            self.asr_engine = None
+            self.character_config.asr_config = asr_config
+            return
+
         if not self.asr_engine or (self.character_config.asr_config != asr_config):
             logger.info(f"Initializing ASR: {asr_config.asr_model}")
             try:
