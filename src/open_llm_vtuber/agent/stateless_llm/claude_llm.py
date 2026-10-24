@@ -7,7 +7,13 @@ import json
 from typing import AsyncIterator, List, Dict, Any
 
 from loguru import logger
-from anthropic import AsyncAnthropic, NOT_GIVEN
+
+try:
+    from anthropic import AsyncAnthropic, NOT_GIVEN
+except ImportError:
+    AsyncAnthropic = None
+    NOT_GIVEN = None
+
 
 from .stateless_llm_interface import StatelessLLMInterface
 
@@ -32,10 +38,14 @@ class AsyncLLM(StatelessLLMInterface):
         self.model = model
         self.system = system
 
+        if AsyncAnthropic is None:
+            raise ImportError("The 'anthropic' package is required for ClaudeLLM. Run `pip install anthropic` to use it.")
+
         # Initialize Claude client
         self.client = AsyncAnthropic(
             api_key=llm_api_key, base_url=base_url if base_url else None
         )
+
 
         logger.info(f"Initialized Claude AsyncLLM with model: {self.model}")
         logger.debug(f"Base URL: {base_url}")

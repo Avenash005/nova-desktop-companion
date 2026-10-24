@@ -18,8 +18,12 @@ class ServerRegistry:
 
     def __init__(self, config_path: str | Path = DEFAULT_CONFIG_PATH) -> None:
         """Initialize the MCP Server Manager."""
+        path_obj = Path(config_path)
+        if not path_obj.exists():
+            path_obj.write_text(json.dumps({"mcp_servers": {}}), encoding="utf-8")
         try:
             config_path = validate_file(config_path, ".json")
+
         except ValueError:
             logger.error(
                 f"MCPSR: File '{config_path}' does not exist, or is not a json file."
