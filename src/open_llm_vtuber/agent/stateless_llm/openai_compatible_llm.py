@@ -221,6 +221,45 @@ class AsyncLLM(StatelessLLMInterface):
                 )
                 yield "__API_NOT_SUPPORT_TOOLS__"
                 return
+
+            if "multimodal" in str(e).lower():
+                logger.warning(
+                    f"Model '{self.model}' does not support multimodal/image requests. Automatically falling back to text-only mode."
+                )
+                fallback_messages = []
+                for msg in messages_with_system:
+                    content = msg.get("content")
+                    if isinstance(content, list):
+                        text_chunks = [
+                            c.get("text", "")
+                            for c in content
+                            if isinstance(c, dict) and c.get("type") == "text"
+                        ]
+                        cleaned_text = "\n".join(filter(None, text_chunks))
+                        if not cleaned_text:
+                            cleaned_text = "[User shared screen view, but the current model does not support image analysis.]"
+                        fallback_messages.append(
+                            {"role": msg.get("role", "user"), "content": cleaned_text}
+                        )
+                    else:
+                        fallback_messages.append(msg)
+
+                try:
+                    retry_stream = await self.client.chat.completions.create(
+                        messages=fallback_messages,
+                        model=self.model,
+                        stream=True,
+                        temperature=self.temperature,
+                        tools=available_tools,
+                    )
+                    yield f"[Note: Screen view was shared, but active model '{self.model}' is text-only. To enable visual screen understanding, switch to a vision model like 'llava' or 'llama3.2-vision' in Ollama.]\n\n"
+                    async for chunk in retry_stream:
+                        if chunk.choices and chunk.choices[0].delta.content:
+                            yield chunk.choices[0].delta.content
+                    return
+                except Exception as fallback_err:
+                    logger.error(f"Multimodal fallback error: {fallback_err}")
+
             logger.error(f"LLM API: Error occurred: {e}")
             logger.info(f"Base URL: {self.base_url}")
             logger.info(f"Model: {self.model}")
